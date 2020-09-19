@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using BattleshipGame.Games;
 using BattleshipGame.GameStates;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,9 +39,12 @@ namespace BattleshipGame
                 while (game.ShouldReadLineFromConsole)
                 {
                     StringBuilder output = game.Print();
+                    output.AppendLine(string.Empty);
                     await Console.Out.WriteAsync(output);
                     
-                    game.Process(Console.ReadLine());
+                    string enteredData = Console.ReadLine();
+                    Console.Clear();
+                    game.Process(enteredData);
                 }
             }
             catch (Exception ex)

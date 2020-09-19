@@ -24,10 +24,11 @@ namespace BattleshipGame.GameStates
             return new StringBuilder("You win, you are awesome. Press any key to end.");
         }
 
-        public override void Process(string enteredData)
+        public override StringBuilder Process(string enteredData)
         {
             logger.LogTrace("Processing in end game state. enteredData: '{enteredData}'", enteredData);
             Game.TransitionTo(serviceProvider.GetService<EndedGameState>());
+            return new StringBuilder();
         }
     }
 }

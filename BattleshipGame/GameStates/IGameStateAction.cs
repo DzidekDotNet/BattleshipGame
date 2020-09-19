@@ -5,6 +5,6 @@ namespace BattleshipGame.GameStates
     internal interface IGameStateAction
     {
         StringBuilder Print();
-        void Process(string enteredData);
+        StringBuilder Process(string enteredData);
     }
 }

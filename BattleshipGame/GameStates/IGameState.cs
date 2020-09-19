@@ -1,4 +1,6 @@
-﻿namespace BattleshipGame.GameStates
+﻿using BattleshipGame.Games;
+
+namespace BattleshipGame.GameStates
 {
     internal interface IGameState: IGameStateAction, IGameStateStatus
     {

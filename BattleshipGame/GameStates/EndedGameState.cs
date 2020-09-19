@@ -21,9 +21,10 @@ namespace BattleshipGame.GameStates
             return new StringBuilder();
         }
 
-        public override void Process(string enteredData)
+        public override StringBuilder Process(string enteredData)
         {
             logger.LogTrace("Processing in ended game state. enteredData: '{enteredData}'", enteredData);
+            return new StringBuilder();
         }
     }
 }

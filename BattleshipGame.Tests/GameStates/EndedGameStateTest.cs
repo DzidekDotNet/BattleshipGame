@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BattleshipGame.Games;
 using BattleshipGame.GameStates;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;

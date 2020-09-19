@@ -2,13 +2,14 @@
 using BattleshipGame.GameStates;
 using Microsoft.Extensions.Logging;
 
-namespace BattleshipGame
+namespace BattleshipGame.Games
 {
     internal class Game : IGame, IGameStateAction, IGameStateStatus
     {
         public bool ShouldReadLineFromConsole => State.ShouldReadLineFromConsole;
         private readonly ILogger<Game> logger;
         private IGameState State { get; set; }
+        public IGameBoard Board { get; }
 
         internal Game(IGameState initialState, ILogger<Game> logger)
         {
@@ -23,14 +24,15 @@ namespace BattleshipGame
             State.SetGameContext(this);
         }
 
+
         public StringBuilder Print()
         {
             return State.Print();
         }
 
-        public void Process(string enteredData)
+        public StringBuilder Process(string enteredData)
         {
-            State.Process(enteredData);
+            return State.Process(enteredData);
         }
     }
 }

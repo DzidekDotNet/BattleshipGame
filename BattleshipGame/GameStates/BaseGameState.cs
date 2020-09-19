@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BattleshipGame.Games;
 
 namespace BattleshipGame.GameStates
 {
@@ -7,7 +8,7 @@ namespace BattleshipGame.GameStates
         public abstract bool ShouldReadLineFromConsole { get; }
         public IGame Game { get; private set; }
         public abstract StringBuilder Print();
-        public abstract void Process(string enteredData);
+        public abstract StringBuilder Process(string enteredData);
 
         public void SetGameContext(IGame game)
         {

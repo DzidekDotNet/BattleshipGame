@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using BattleshipGame.Games;
 using BattleshipGame.GameStates;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -22,8 +23,8 @@ namespace BattleshipGame.Tests.GameStates
             serviceProviderMock
                 .Setup(x => x.GetService(It.IsAny<Type>()))
                 .Returns<Type>((serviceType) => (serviceType == typeof(RunningGameState)
-                    ? (IGameState)new RunningGameState(null, NullLogger<RunningGameState>.Instance)
-                    : (IGameState)new EndedGameState(NullLogger<EndedGameState>.Instance)));
+                    ? (IGameState) new RunningGameState(null, null, null, NullLogger<RunningGameState>.Instance)
+                    : (IGameState) new EndedGameState(NullLogger<EndedGameState>.Instance)));
 
             target = new NewGameState(serviceProviderMock.Object, NullLogger<NewGameState>.Instance);
         }
