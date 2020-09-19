@@ -1,25 +1,20 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace BattleshipGame.GameStates
 {
-    internal class EndedGameState:IGameState
+    internal class EndedGameState : BaseGameState
     {
-        public IGame Game { get; }
-        public bool ShouldReadLineFromConsole => false;
-        public StringBuilder Print()
+        public override bool ShouldReadLineFromConsole => false;
+
+        public override StringBuilder Print()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void Process(string enteredData)
+        public override void Process(string enteredData)
         {
-            throw new System.NotImplementedException();
-        }
-
-
-        public void SetGameContext(IGame game)
-        {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

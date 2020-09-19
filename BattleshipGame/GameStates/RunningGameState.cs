@@ -2,22 +2,15 @@
 
 namespace BattleshipGame.GameStates
 {
-    internal class RunningGameState: IGameState
+    internal class RunningGameState: BaseGameState
     {
-        public IGame Game { get; }
-        public bool ShouldReadLineFromConsole => true;
-        public StringBuilder Print()
+        public override bool ShouldReadLineFromConsole => true;
+        public override StringBuilder Print()
         {
             throw new System.NotImplementedException();
         }
 
-        public void Process(string enteredData)
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        public void SetGameContext(IGame game)
+        public override void Process(string enteredData)
         {
             throw new System.NotImplementedException();
         }

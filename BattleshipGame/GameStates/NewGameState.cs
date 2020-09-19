@@ -3,22 +3,16 @@ using System.Text;
 
 namespace BattleshipGame.GameStates
 {
-    internal class NewGameState : IGameState
+    internal class NewGameState : BaseGameState
     {
-        public IGame Game { get; }
-        public bool ShouldReadLineFromConsole => true;
+        public override bool ShouldReadLineFromConsole => true;
 
-        public StringBuilder Print()
+        public override StringBuilder Print()
         {
             throw new NotImplementedException();
         }
 
-        public void Process(string enteredData)
-        {
-            throw new NotImplementedException();
-        }
-        
-        public void SetGameContext(IGame game)
+        public override void Process(string enteredData)
         {
             throw new NotImplementedException();
         }
