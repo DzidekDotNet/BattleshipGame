@@ -2,7 +2,7 @@
 {
     internal interface IGameState: IGameStateAction, IGameStateStatus
     {
-        
+        IGame Game { get; }
         
         void SetGameContext(IGame game);
         

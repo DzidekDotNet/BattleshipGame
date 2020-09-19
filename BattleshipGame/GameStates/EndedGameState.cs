@@ -4,6 +4,7 @@ namespace BattleshipGame.GameStates
 {
     internal class EndedGameState:IGameState
     {
+        public IGame Game { get; }
         public bool ShouldReadLineFromConsole => false;
         public StringBuilder Print()
         {
@@ -14,6 +15,7 @@ namespace BattleshipGame.GameStates
         {
             throw new System.NotImplementedException();
         }
+
 
         public void SetGameContext(IGame game)
         {
