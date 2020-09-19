@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using BattleshipGame.GameStates;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 using Xunit.Categories;
@@ -15,7 +16,7 @@ namespace BattleshipGame.Tests.GameStates
         {
             gameMock = new Mock<IGame>();
             
-            target = new EndedGameState();
+            target = new EndedGameState(NullLogger<EndedGameState>.Instance);
         }
         
         [Fact]

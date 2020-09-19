@@ -5,10 +5,12 @@ namespace BattleshipGame.GameStates
 {
     internal class NewGameState : BaseGameState
     {
+        private readonly ILoggerFactory loggerFactory;
         private readonly ILogger<NewGameState> logger;
 
         public NewGameState(ILoggerFactory loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
             logger = loggerFactory.CreateLogger<NewGameState>();
         }
 
@@ -30,7 +32,7 @@ namespace BattleshipGame.GameStates
             }
             else
             {
-                nextGameState = new EndedGameState();
+                nextGameState = new EndedGameState(loggerFactory.CreateLogger<EndedGameState>());
             }
             
             Game.TransitionTo(nextGameState);

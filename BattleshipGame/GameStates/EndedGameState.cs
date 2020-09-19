@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace BattleshipGame.GameStates
 {
@@ -7,14 +8,22 @@ namespace BattleshipGame.GameStates
     {
         public override bool ShouldReadLineFromConsole => false;
 
+        private readonly ILogger<EndedGameState> logger;
+
+        public EndedGameState(ILogger<EndedGameState> logger)
+        {
+            this.logger = logger;
+        }
+
         public override StringBuilder Print()
         {
-            throw new NotImplementedException();
+            logger.LogTrace("Printing in ended game state");
+            return new StringBuilder();
         }
 
         public override void Process(string enteredData)
         {
-            throw new NotImplementedException();
+            logger.LogTrace("Processing in ended game state. enteredData: '{enteredData}'", enteredData);
         }
     }
 }
