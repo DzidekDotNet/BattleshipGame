@@ -1,4 +1,7 @@
-﻿using BattleshipGame.GameStates;
+﻿using System;
+using BattleshipGame.GameStates;
+using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using Xunit;
 using Xunit.Categories;
 
@@ -11,7 +14,12 @@ namespace BattleshipGame.Tests.GameStates
 
         public RunningGameStateTest()
         {
-            target = new RunningGameState();
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock
+                .Setup(x => x.GetService(It.IsAny<Type>()))
+                .Returns(new EndedGameState(NullLogger<EndedGameState>.Instance));
+            
+            target = new RunningGameState(serviceProviderMock.Object, NullLogger<RunningGameState>.Instance);
         }
 
         [Fact]

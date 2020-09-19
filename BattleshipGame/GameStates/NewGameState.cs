@@ -1,17 +1,19 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BattleshipGame.GameStates
 {
     internal class NewGameState : BaseGameState
     {
-        private readonly ILoggerFactory loggerFactory;
+        private readonly IServiceProvider serviceProvider;
         private readonly ILogger<NewGameState> logger;
 
-        public NewGameState(ILoggerFactory loggerFactory)
+        public NewGameState(IServiceProvider serviceProvider, ILogger<NewGameState> logger)
         {
-            this.loggerFactory = loggerFactory;
-            logger = loggerFactory.CreateLogger<NewGameState>();
+            this.serviceProvider = serviceProvider;
+            this.logger = logger;
         }
 
         public override bool ShouldReadLineFromConsole => true;
@@ -28,11 +30,11 @@ namespace BattleshipGame.GameStates
             IGameState nextGameState;
             if (enteredData.ToLower() == "y")
             {
-                nextGameState = new RunningGameState();
+                nextGameState = serviceProvider.GetService<RunningGameState>();
             }
             else
             {
-                nextGameState = new EndedGameState(loggerFactory.CreateLogger<EndedGameState>());
+                nextGameState = serviceProvider.GetService<EndedGameState>();
             }
             
             Game.TransitionTo(nextGameState);

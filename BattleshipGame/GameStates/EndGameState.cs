@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace BattleshipGame.GameStates
 {
     internal class EndGameState : BaseGameState
     {
-        private readonly ILoggerFactory loggerFactory;
+        private readonly IServiceProvider serviceProvider;
         private readonly ILogger<EndGameState> logger;
         public override bool ShouldReadLineFromConsole => true;
 
 
-        public EndGameState(ILoggerFactory loggerFactory)
+        public EndGameState(IServiceProvider serviceProvider, ILogger<EndGameState> logger)
         {
-            this.loggerFactory = loggerFactory;
-            logger = loggerFactory.CreateLogger<EndGameState>();
+            this.serviceProvider = serviceProvider;
+            this.logger = logger;
         }
 
         public override StringBuilder Print()
@@ -26,7 +27,7 @@ namespace BattleshipGame.GameStates
         public override void Process(string enteredData)
         {
             logger.LogTrace("Processing in end game state. enteredData: '{enteredData}'", enteredData);
-            Game.TransitionTo(new EndedGameState(loggerFactory.CreateLogger<EndedGameState>()));
+            Game.TransitionTo(serviceProvider.GetService<EndedGameState>());
         }
     }
 }

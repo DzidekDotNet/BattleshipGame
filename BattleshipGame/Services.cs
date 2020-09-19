@@ -11,7 +11,7 @@ namespace BattleshipGame
         {
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>))
                 .AddLogging(configure => configure.AddSerilog());
-            services.AddTransient<NewGameState>();
+            services.AddGameStateServices();
         }
     }
 }

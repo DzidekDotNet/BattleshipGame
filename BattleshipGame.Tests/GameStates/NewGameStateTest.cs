@@ -1,6 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using BattleshipGame.GameStates;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
@@ -16,10 +16,16 @@ namespace BattleshipGame.Tests.GameStates
 
         public NewGameStateTest()
         {
-            ILoggerFactory loggerFactoryMock = new NullLoggerFactory();
             gameMock = new Mock<IGame>();
-            
-            target = new NewGameState(loggerFactoryMock);
+
+            var serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock
+                .Setup(x => x.GetService(It.IsAny<Type>()))
+                .Returns<Type>((serviceType) => (serviceType == typeof(RunningGameState)
+                    ? (IGameState)new RunningGameState(null, NullLogger<RunningGameState>.Instance)
+                    : (IGameState)new EndedGameState(NullLogger<EndedGameState>.Instance)));
+
+            target = new NewGameState(serviceProviderMock.Object, NullLogger<NewGameState>.Instance);
         }
 
         [Fact]
@@ -45,7 +51,7 @@ namespace BattleshipGame.Tests.GameStates
             gameMock
                 .Setup(x => x.TransitionTo(It.IsAny<IGameState>()))
                 .Callback<IGameState>((state) => { gameState = state; });
-            
+
             target.SetGameContext(gameMock.Object);
 
             target.Process(enteredData);
@@ -53,7 +59,7 @@ namespace BattleshipGame.Tests.GameStates
             gameMock.Verify(x => x.TransitionTo(It.IsAny<IGameState>()));
             Assert.IsType<RunningGameState>(gameState);
         }
-        
+
         [Theory]
         [InlineData("n")]
         [InlineData("N")]
@@ -64,7 +70,7 @@ namespace BattleshipGame.Tests.GameStates
             gameMock
                 .Setup(x => x.TransitionTo(It.IsAny<IGameState>()))
                 .Callback<IGameState>((state) => { gameState = state; });
-            
+
             target.SetGameContext(gameMock.Object);
 
             target.Process(enteredData);
