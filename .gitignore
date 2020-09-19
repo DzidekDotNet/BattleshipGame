@@ -1,0 +1,13 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+/.idea/.idea.BattleshipGame/.idea/codeStyles/codeStyleConfig.xml
+/.idea/.idea.BattleshipGame/.idea/contentModel.xml
+/.idea/.idea.BattleshipGame/.idea/encodings.xml
+/.idea/.idea.BattleshipGame/.idea/indexLayout.xml
+/.idea/.idea.BattleshipGame/.idea/modules.xml
+/.idea/.idea.BattleshipGame/.idea/projectSettingsUpdater.xml
+/.idea/.idea.BattleshipGame/.idea/vcs.xml
+/.idea/.idea.BattleshipGame/.idea/workspace.xml
