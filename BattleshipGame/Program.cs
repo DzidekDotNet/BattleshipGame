@@ -28,13 +28,18 @@ namespace BattleshipGame
                 var serviceCollection = new ServiceCollection();
                 Services.ConfigureServices(serviceCollection);
                 var serviceProvider = serviceCollection.BuildServiceProvider();
-                var logger = serviceProvider.GetService<ILogger<Game>>();
+                var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+                var newGameState = serviceProvider.GetService<NewGameState>();
 
-                Game game = new Game(new NewGameState(), logger);
+                Game game = new Game(
+                    newGameState, 
+                    loggerFactory.CreateLogger<Game>());
+                
                 while (game.ShouldReadLineFromConsole)
                 {
                     StringBuilder output = game.Print();
                     await Console.Out.WriteAsync(output);
+                    
                     game.Process(Console.ReadLine());
                 }
             }

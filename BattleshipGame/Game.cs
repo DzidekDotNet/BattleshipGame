@@ -13,7 +13,7 @@ namespace BattleshipGame
         internal Game(IGameState initialState, ILogger<Game> logger)
         {
             this.logger = logger;
-            State = initialState;
+            TransitionTo(initialState);
         }
 
         public void TransitionTo(IGameState state)

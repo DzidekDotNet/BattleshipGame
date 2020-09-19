@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using BattleshipGame.GameStates;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 using Xunit.Categories;
@@ -14,8 +16,10 @@ namespace BattleshipGame.Tests.GameStates
 
         public NewGameStateTest()
         {
+            ILoggerFactory loggerFactoryMock = new NullLoggerFactory();
             gameMock = new Mock<IGame>();
-            target = new NewGameState();
+            
+            target = new NewGameState(loggerFactoryMock);
         }
 
         [Fact]
@@ -48,6 +52,25 @@ namespace BattleshipGame.Tests.GameStates
 
             gameMock.Verify(x => x.TransitionTo(It.IsAny<IGameState>()));
             Assert.IsType<RunningGameState>(gameState);
+        }
+        
+        [Theory]
+        [InlineData("n")]
+        [InlineData("N")]
+        [InlineData("a")]
+        public void Process_WhenEnteredDataIsNotY_ShouldChangeGameStateToEndedGameState(string enteredData)
+        {
+            IGameState gameState = null;
+            gameMock
+                .Setup(x => x.TransitionTo(It.IsAny<IGameState>()))
+                .Callback<IGameState>((state) => { gameState = state; });
+            
+            target.SetGameContext(gameMock.Object);
+
+            target.Process(enteredData);
+
+            gameMock.Verify(x => x.TransitionTo(It.IsAny<IGameState>()));
+            Assert.IsType<EndedGameState>(gameState);
         }
     }
 }
