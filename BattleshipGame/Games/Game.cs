@@ -18,15 +18,16 @@ namespace BattleshipGame.Games
             new Destroyer()
         };
 
-        internal Game(IGameState initialState, ILogger<Game> logger)
+        internal Game(IGameState initialState, IGameBoard gameBoard, ILogger<Game> logger)
         {
             this.logger = logger;
+            Board = gameBoard;
             TransitionTo(initialState);
         }
 
         public void SetGeneratedShips(IList<GeneratedShip> generatedShips)
         {
-            throw new System.NotImplementedException();
+            ((List<GeneratedShip>)Board.GeneratedShips).AddRange(generatedShips);
         }
         public void TransitionTo(IGameState state)
         {

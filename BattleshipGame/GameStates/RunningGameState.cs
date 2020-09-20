@@ -38,8 +38,9 @@ namespace BattleshipGame.GameStates
             try
             {
                 Point shootCoordinates = ParseEnteredDataToPoint(enteredData);
+                Game.Board.Shoots.Add(shootCoordinates);
 
-                ShootResult shootResult = shootChecker.CheckShot(shootCoordinates, Game.Board);
+                ShootResult shootResult = shootChecker.CheckShot(shootCoordinates, Game.Board.GeneratedShips, Game.Board.Shoots);
                 switch (shootResult)
                 {
                     case ShootResult.Hit:
@@ -68,8 +69,8 @@ namespace BattleshipGame.GameStates
 
         private Point ParseEnteredDataToPoint(string enteredData)
         {
-            byte x = (byte) (((byte) enteredData[0]) - 65 + 1);
-            byte y = byte.Parse(enteredData.Substring(1));
+            byte x = (byte) (((byte) enteredData[0]) - 65);
+            byte y = (byte) (byte.Parse(enteredData.Substring(1)) - 1);
             
             return new Point(x, y);
         }

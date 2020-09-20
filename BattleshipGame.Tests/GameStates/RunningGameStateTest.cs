@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using BattleshipGame.Games;
 using BattleshipGame.GameStates;
@@ -20,6 +21,9 @@ namespace BattleshipGame.Tests.GameStates
         public RunningGameStateTest()
         {
             gameMock = new Mock<IGame>();
+            Mock<IGameBoard> gameBoardMock = new Mock<IGameBoard>();
+            gameBoardMock.SetupGet(x => x.Shoots).Returns(new List<Point>());
+            gameMock.SetupGet(x => x.Board).Returns(gameBoardMock.Object);
 
             serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
@@ -57,7 +61,7 @@ namespace BattleshipGame.Tests.GameStates
         public void Process_WhenMiss_PrintMissInformation()
         {
             shootCheckerMock
-                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IGameBoard>()))
+                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IList<GeneratedShip>>(), It.IsAny<IList<Point>>()))
                 .Returns(ShootResult.Miss);
             target.SetGameContext(gameMock.Object);
 
@@ -70,7 +74,7 @@ namespace BattleshipGame.Tests.GameStates
         public void Process_WhenHit_PrintHitInformation()
         {
             shootCheckerMock
-                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IGameBoard>()))
+                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IList<GeneratedShip>>(), It.IsAny<IList<Point>>()))
                 .Returns(ShootResult.Hit);
             target.SetGameContext(gameMock.Object);
 
@@ -83,7 +87,7 @@ namespace BattleshipGame.Tests.GameStates
         public void Process_WhenHitAndSink_PrintHitAndSinkInformation()
         {
             shootCheckerMock
-                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IGameBoard>()))
+                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IList<GeneratedShip>>(), It.IsAny<IList<Point>>()))
                 .Returns(ShootResult.HitAndSink);
             target.SetGameContext(gameMock.Object);
 
@@ -96,7 +100,7 @@ namespace BattleshipGame.Tests.GameStates
         public void Process_WhenWrongShoot_PrintWrongShootInformation()
         {
             shootCheckerMock
-                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IGameBoard>()))
+                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IList<GeneratedShip>>(), It.IsAny<IList<Point>>()))
                 .Returns(ShootResult.WrongShoot);
             target.SetGameContext(gameMock.Object);
 
@@ -114,7 +118,7 @@ namespace BattleshipGame.Tests.GameStates
                 .Callback<IGameState>((state) => { gameState = state; });
 
             shootCheckerMock
-                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IGameBoard>()))
+                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IList<GeneratedShip>>(), It.IsAny<IList<Point>>()))
                 .Returns(ShootResult.SinkAllShips);
             target.SetGameContext(gameMock.Object);
 

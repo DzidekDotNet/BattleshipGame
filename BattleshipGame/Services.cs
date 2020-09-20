@@ -1,4 +1,5 @@
-﻿using BattleshipGame.GameStates;
+﻿using BattleshipGame.Games;
+using BattleshipGame.GameStates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -12,6 +13,7 @@ namespace BattleshipGame
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>))
                 .AddLogging(configure => configure.AddSerilog());
             services.AddGameStateServices();
+            services.AddGameServices();
         }
     }
 }

@@ -4,7 +4,7 @@ using BattleshipGame.Games;
 
 namespace BattleshipGame.Tests.Games
 {
-    public class GameBoardDrawerTest_Print_WhenBoardIsEmptyAndShipsAreGenerated : IEnumerable<object[]>
+    public class GameBoardDrawerTest_PrintBoard_WhenBoardIsEmptyAndShipsAreGenerated : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
@@ -15,17 +15,31 @@ namespace BattleshipGame.Tests.Games
                 {
                     new GeneratedShip(new Battleship(), new List<Point>(){new Point(1,1)})
                 },
-                ""
+                @"   | A | B |
+------------
+ 1 |   |   |
+------------
+ 2 |   |   |
+------------
+"
             };
             yield return new object[]
             {
-                5,
+                3,
                 new List<GeneratedShip>()
                 {
                     new GeneratedShip(new Battleship(), new List<Point>(){new Point(1,1)}),
-                    new GeneratedShip(new Battleship(), new List<Point>(){new Point(4,4)})
+                    new GeneratedShip(new Battleship(), new List<Point>(){new Point(2,2)})
                 },
-                ""
+                @"   | A | B | C |
+----------------
+ 1 |   |   |   |
+----------------
+ 2 |   |   |   |
+----------------
+ 3 |   |   |   |
+----------------
+"
             };
         }
         

@@ -31,9 +31,11 @@ namespace BattleshipGame
                 var serviceProvider = serviceCollection.BuildServiceProvider();
                 var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
                 var newGameState = serviceProvider.GetService<NewGameState>();
+                var gameBoard = serviceProvider.GetService<IGameBoard>();
 
                 Game game = new Game(
                     newGameState, 
+                    gameBoard,
                     loggerFactory.CreateLogger<Game>());
                 
                 while (game.ShouldReadLineFromConsole)
@@ -44,7 +46,9 @@ namespace BattleshipGame
                     
                     string enteredData = Console.ReadLine();
                     Console.Clear();
-                    game.Process(enteredData);
+                    StringBuilder processInfo = game.Process(enteredData);
+                    processInfo.AppendLine(string.Empty);
+                    await Console.Out.WriteAsync(processInfo);
                 }
             }
             catch (Exception ex)
