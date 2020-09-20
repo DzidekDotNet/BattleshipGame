@@ -9,7 +9,7 @@
       {
         "Name": "File",
         "Args": {
-          "path": "D:/Projects/BattleshipGame/logs/WarehousesStocks-.log",
+          "path": "D:/Projects/BattleshipGame/logs/BattleshipGame-.log",
           "rollingInterval": "Day",
           "rollOnFileSizeLimit": true,
           "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message}{NewLine}{Exception}"
