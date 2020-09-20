@@ -15,15 +15,16 @@ namespace BattleshipGame.Tests.GameStates
         private readonly RunningGameState target;
         private readonly Mock<IGame> gameMock;
         private readonly Mock<IShootChecker> shootCheckerMock;
+        private readonly Mock<IServiceProvider> serviceProviderMock;
         
         public RunningGameStateTest()
         {
             gameMock = new Mock<IGame>();
 
-            Mock<IServiceProvider> serviceProviderMock = new Mock<IServiceProvider>();
+            serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
                 .Setup(x => x.GetService(It.IsAny<Type>()))
-                .Returns(new EndedGameState(NullLogger<EndedGameState>.Instance));
+                .Returns(new EndGameState(serviceProviderMock.Object, NullLogger<EndGameState>.Instance));
 
             Mock<IGameBoardDrawer> boardDrawerMock = new Mock<IGameBoardDrawer>();
             boardDrawerMock
@@ -32,7 +33,6 @@ namespace BattleshipGame.Tests.GameStates
             
             shootCheckerMock = new Mock<IShootChecker>();
             
-
             target = new RunningGameState(serviceProviderMock.Object, boardDrawerMock.Object, shootCheckerMock.Object,
                 NullLogger<RunningGameState>.Instance);
         }
@@ -103,6 +103,26 @@ namespace BattleshipGame.Tests.GameStates
             StringBuilder result = target.Process("A3");
             
             Assert.Equal($"Wrong coordinates. Try again.{Environment.NewLine}", result.ToString());
+        }
+        
+        [Fact]
+        public void Process_WhenSinkAllShips_PrintSinkAllShipsInformationAndChangeState()
+        {
+            IGameState gameState = null;
+            gameMock
+                .Setup(x => x.TransitionTo(It.IsAny<IGameState>()))
+                .Callback<IGameState>((state) => { gameState = state; });
+
+            shootCheckerMock
+                .Setup(x => x.CheckShot(It.IsAny<Point>(), It.IsAny<IGameBoard>()))
+                .Returns(ShootResult.SinkAllShips);
+            target.SetGameContext(gameMock.Object);
+
+            StringBuilder result = target.Process("A3");
+            
+            Assert.Equal($"You sink all ships{Environment.NewLine}", result.ToString());
+            gameMock.Verify(x => x.TransitionTo(It.IsAny<IGameState>()));
+            Assert.IsType<EndGameState>(gameState);
         }
     }
 }

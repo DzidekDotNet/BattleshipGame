@@ -5,6 +5,7 @@
         Miss,
         Hit,
         HitAndSink,
-        WrongShoot
+        WrongShoot,
+        SinkAllShips
     }
 }

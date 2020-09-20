@@ -9,14 +9,14 @@ namespace BattleshipGame.GameStates
     internal class NewGameState : BaseGameState
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly IShipGenerator shipGenerator;
+        private readonly IShipCoordinatesGenerator shipCoordinatesGenerator;
         private readonly ILogger<NewGameState> logger;
 
-        public NewGameState(IServiceProvider serviceProvider, IShipGenerator shipGenerator,
+        public NewGameState(IServiceProvider serviceProvider, IShipCoordinatesGenerator shipCoordinatesGenerator,
             ILogger<NewGameState> logger)
         {
             this.serviceProvider = serviceProvider;
-            this.shipGenerator = shipGenerator;
+            this.shipCoordinatesGenerator = shipCoordinatesGenerator;
             this.logger = logger;
         }
 
@@ -34,7 +34,7 @@ namespace BattleshipGame.GameStates
             IGameState nextGameState;
             if (enteredData.ToLower() == "y")
             {
-                Game.SetGeneratedShips(shipGenerator.GenerateShips(Game.Board.Size, ))
+                Game.SetGeneratedShips(shipCoordinatesGenerator.GenerateShips(Game.Board.Size, Game.ShipsToGenerate));
                 nextGameState = serviceProvider.GetService<RunningGameState>();
             }
             else

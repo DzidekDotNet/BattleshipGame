@@ -1,8 +1,8 @@
 ﻿namespace BattleshipGame.Games
 {
-    internal class Cruiser:Ship
+    internal class Destroyer:Ship
     {
-        internal Cruiser():base(3)
+        internal Destroyer():base(4)
         {
             
         }

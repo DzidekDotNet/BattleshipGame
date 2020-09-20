@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using BattleshipGame.Games;
 using BattleshipGame.GameStates;
@@ -14,10 +15,14 @@ namespace BattleshipGame.Tests.GameStates
     {
         private readonly NewGameState target;
         private readonly Mock<IGame> gameMock;
+        private readonly Mock<IShipCoordinatesGenerator> shipCoordinatesGeneratorMock;
 
         public NewGameStateTest()
         {
             gameMock = new Mock<IGame>();
+            Mock<IGameBoard> gameBoardMock = new Mock<IGameBoard>();
+            gameBoardMock.SetupGet(x => x.Size).Returns(10);
+            gameMock.SetupGet(x => x.Board).Returns(gameBoardMock.Object);
 
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
@@ -26,7 +31,10 @@ namespace BattleshipGame.Tests.GameStates
                     ? (IGameState) new RunningGameState(null, null, null, NullLogger<RunningGameState>.Instance)
                     : (IGameState) new EndedGameState(NullLogger<EndedGameState>.Instance)));
 
-            target = new NewGameState(serviceProviderMock.Object, NullLogger<NewGameState>.Instance);
+            shipCoordinatesGeneratorMock = new Mock<IShipCoordinatesGenerator>();
+
+            target = new NewGameState(serviceProviderMock.Object, shipCoordinatesGeneratorMock.Object,
+                NullLogger<NewGameState>.Instance);
         }
 
         [Fact]
@@ -59,6 +67,7 @@ namespace BattleshipGame.Tests.GameStates
 
             gameMock.Verify(x => x.TransitionTo(It.IsAny<IGameState>()));
             Assert.IsType<RunningGameState>(gameState);
+            shipCoordinatesGeneratorMock.Verify(x => x.GenerateShips(It.IsAny<byte>(), It.IsAny<IEnumerable<Ship>>()));
         }
 
         [Theory]
@@ -78,6 +87,8 @@ namespace BattleshipGame.Tests.GameStates
 
             gameMock.Verify(x => x.TransitionTo(It.IsAny<IGameState>()));
             Assert.IsType<EndedGameState>(gameState);
+            shipCoordinatesGeneratorMock.Verify(x => x.GenerateShips(It.IsAny<byte>(), It.IsAny<IEnumerable<Ship>>()),
+                Times.Never);
         }
     }
 }

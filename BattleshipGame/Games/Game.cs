@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using BattleshipGame.GameStates;
 using Microsoft.Extensions.Logging;
 
@@ -10,6 +11,12 @@ namespace BattleshipGame.Games
         private readonly ILogger<Game> logger;
         private IGameState State { get; set; }
         public IGameBoard Board { get; }
+        public IEnumerable<Ship> ShipsToGenerate => new List<Ship>
+        {
+            new Battleship(),
+            new Destroyer(),
+            new Destroyer()
+        };
 
         internal Game(IGameState initialState, ILogger<Game> logger)
         {
@@ -17,6 +24,10 @@ namespace BattleshipGame.Games
             TransitionTo(initialState);
         }
 
+        public void SetGeneratedShips(IList<GeneratedShip> generatedShips)
+        {
+            throw new System.NotImplementedException();
+        }
         public void TransitionTo(IGameState state)
         {
             logger.LogTrace($"Setting game state {state.GetType().Name}.");

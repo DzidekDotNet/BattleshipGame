@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using BattleshipGame.Games;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BattleshipGame.GameStates
 {
@@ -35,9 +34,44 @@ namespace BattleshipGame.GameStates
 
         public override StringBuilder Process(string enteredData)
         {
-            throw new NotImplementedException();
+            StringBuilder output = new StringBuilder();
+            try
+            {
+                Point shootCoordinates = ParseEnteredDataToPoint(enteredData);
+
+                ShootResult shootResult = shootChecker.CheckShot(shootCoordinates, Game.Board);
+                switch (shootResult)
+                {
+                    case ShootResult.Hit:
+                        output.AppendLine("You hit");
+                        return output;
+                    case ShootResult.Miss:
+                        output.AppendLine("You miss");
+                        return output;
+                    case ShootResult.HitAndSink:
+                        output.AppendLine("You hit and sink");
+                        return output;
+                    case ShootResult.SinkAllShips:
+                        output.AppendLine("You sink all ships");
+                        Game.TransitionTo(serviceProvider.GetService<EndGameState>());
+                        return output;
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, e.Message);
+            }
+
+            output.AppendLine("Wrong coordinates. Try again.");
+            return output;
         }
 
-        
+        private Point ParseEnteredDataToPoint(string enteredData)
+        {
+            byte x = (byte) (((byte) enteredData[0]) - 65 + 1);
+            byte y = byte.Parse(enteredData.Substring(1));
+            
+            return new Point(x, y);
+        }
     }
 }

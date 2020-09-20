@@ -2,7 +2,7 @@
 {
     internal class Battleship:Ship
     {
-        internal Battleship():base(4)
+        internal Battleship():base(5)
         {
             
         }
